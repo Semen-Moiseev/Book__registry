@@ -5,101 +5,63 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Author;
 use App\Http\Resources\AuthorResource;
+use App\Services\AuthorService;
+use App\Http\Requests\StoreAuthorRequest;
+use App\Http\Requests\UpdateAuthorRequest;
 use App\Exceptions\CustomException;
+use Illuminate\Http\JsonResponse;
 
 class AuthorController extends Controller
 {
-    // GET /api/authors -> Получить список авторов
-    public function index(Request $request)
+    protected AuthorService $service;
+
+    public function __construct(AuthorService $service)
+    {
+        $this->service = $service;
+    }
+
+    // GET /api/authors -> Получить список авторов с пагинацией
+    public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('per_page', 5);
-        $authors = Author::paginate($perPage);
-        return response()->json([
-            'success' => true,
-            'data' => AuthorResource::collection($authors),
-            'message' => 'Data has been successfully output'
-        ]);
+        $authors = $this->service->getAllAuthors($perPage);
+        return AuthorResource::collection($authors)
+        ->response()
+        ->setStatusCode(200);
     }
 
     // GET /api/authors/{id} -> Получить автора по id
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        $author = Author::find($id);
+        $author = $this->service->getAuthorById($id);
         if(!$author)
         {
             throw new CustomException("Author with the id {$id} was not found");
         }
-
-        return response()->json([
-            'success' => true,
-            'data' => new AuthorResource($author),
-            'message' => 'Data has been successfully output'
-        ]);
+        return response()->json(new AuthorResource($author), 200);
     }
 
-    //POST /api/authors -> Создание автора
-    public function store(Request $request)
+    // POST /api/authors -> Создание автора
+    public function store(StoreAuthorRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'] //Не должно быть пустым, Тип данных, Длина не больше 255
-        ]);
-
-        if (Author::where('name', $validated['name'])->exists()) {
-            throw new CustomException('Author with that name already exists');
-        }
-
-        $author = Author::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'data' => new AuthorResource($author),
-            'message' => 'Data saved successfully'
-        ]);
+        $author = $this->service->createAuthor($request->validated());
+        return response()->json(new AuthorResource($author), 201);
     }
 
-    // PUT /api/authors/{id} -> Обновление данных автора с определенным id
-    public function update(Request $request, $id)
+    // PUT /api/authors/{id} -> Обновление данных автора по id
+    public function update(UpdateAuthorRequest $request, Author $author): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'] //Не должно быть пустым, Тип данных, Длина не больше 255
-        ]);
-        if (Author::where('name', $validated['name'])->exists()) {
-            throw new CustomException('Author with that name already exists');
-        }
-
-        $author = Author::find($id);
-        if(!$author)
-        {
-            throw new CustomException("Author with the id {$id} was not found");
-        }
-
-        $request->validate([
-            'name' => ['sometimes', 'string', 'max:255'] //Проверка если переменная есть в поле ввода, Тип данных, Длина не больше 255
-        ]);
-
-        $author->update($request->all());
-
-        return response()->json([
-            'success' => true,
-            'data' => new AuthorResource($author)->fresh(),
-            'message' => 'The data has been updated successfully'
-        ]);
+        $author = $this->service->updateAuthor($author, $request->validated());
+        return response()->json(new AuthorResource($author)->fresh(), 200);
     }
 
-    //DELETE /api/authors/{id} -> Удаление автора с определенным id
-    public function destroy($id)
+    // DELETE /api/authors/{id} -> Удаление автора с определенным id
+    public function destroy(Author $author): JsonResponse
     {
-        $author = Author::find($id);
-        if(!$author)
-        {
-            throw new CustomException("Author with the id {$id} was not found");
-        }
-
-        $author->delete();
-
+        $this->service->deleteAuthor($author);
         return response()->json([
             'success' => true,
             'message' => 'Data has been successfully deleted'
-        ]);
+        ], 204);
     }
 }
