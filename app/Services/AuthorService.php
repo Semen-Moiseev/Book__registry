@@ -3,40 +3,48 @@
 namespace App\Services;
 
 use App\Models\Author;
+use App\Repositories\AuthorRepositoryInterface;
 
 class AuthorService
 {
+    protected AuthorRepositoryInterface $repository;
+
+    public function __construct(AuthorRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     // Получить список авторов с пагинацией
     public function getAllAuthors(int $perPage)
     {
-        $authors = Author::paginate($perPage);
-        return $authors;
+        return $this->repository->getAll($perPage);
     }
 
     // Получить автора по id
     public function getAuthorById(int $id): ?Author
     {
-        $author = Author::find($id);
-        return $author;
+        return $this->repository->findById($id);
     }
 
     // Создание автора
     public function createAuthor(array $data): Author
     {
-        $author = Author::create($data);
-        return $author;
+        // $author = $this->repository->create($data);
+        // return $author;
+        return $this->repository->create($data);
     }
 
     // Обновление данных автора по id
     public function updateAuthor(Author $author, array $data): Author
     {
-        $author->update($data);
-        return $author;
+        // $author->update($data);
+        // return $author;
+        return $this->repository->update($author, $data);
     }
 
     // Удаление автора с определенным id
     public function deleteAuthor(Author $author): void
     {
-        $author->delete();
+        $this->repository->delete($author);
     }
 }
