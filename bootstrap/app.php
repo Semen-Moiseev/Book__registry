@@ -22,26 +22,44 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 // Определяем статус код
                 $status = 500;
-                if (method_exists($e, 'getStatusCode')) {
+                $message = 'Произошла ошибка на сервере';
+
+                // CustomException
+                if ($e instanceof \App\Exceptions\CustomException) {
                     $status = $e->getStatusCode();
-                } elseif ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                    $message = 'Ресурс не найден';
+                }
+                // Модель не найдена -> 404
+                elseif ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                     $status = 404;
-                } elseif ($e instanceof \Illuminate\Validation\ValidationException) {
+                    $message = 'Ресурс не найден';
+                }
+                // Ошибки валидации -> 422
+                elseif ($e instanceof \Illuminate\Validation\ValidationException) {
                     $status = 422;
-                } elseif ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                    $message = 'Ошибка валидации';
+                }
+                // Неавторизован -> 401
+                elseif ($e instanceof \Illuminate\Auth\AuthenticationException) {
                     $status = 401;
-                } elseif ($e instanceof \Illuminate\Auth\Access\AuthorizationException) {
+                    $message = 'Не авторизован';
+                }
+                // Нет прав -> 403
+                elseif ($e instanceof \Illuminate\Auth\Access\AuthorizationException) {
                     $status = 403;
-                } else {
-                    $code = $e->getCode();
-                    $status = ($code >= 400 && $code < 600) ? $code : 500;
+                    $message = 'Нет доступа';
+                }
+                // Любое другое HTTP-исключение
+                elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+                    $status = $e->getStatusCode();
+                    $message = $e->getMessage() ?: 'Произошла ошибка на сервере';
                 }
 
                 // Формируем JSON ответ ТОЛЬКО с нужными полями
                 $response = [
                     'success' => false,
                     'code' => $status,
-                    'message' => $e->getMessage(),
+                    'message' => $message,
                 ];
 
                 // Для ошибок валидации добавляем детали

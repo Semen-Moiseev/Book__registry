@@ -8,7 +8,6 @@ use App\Http\Resources\AuthorResource;
 use App\Services\AuthorService;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
-use App\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 
 class AuthorController extends Controller
@@ -34,10 +33,6 @@ class AuthorController extends Controller
     public function show(int $id): JsonResponse
     {
         $author = $this->service->getAuthorById($id);
-        if(!$author)
-        {
-            throw new CustomException("Author with the id {$id} was not found");
-        }
         return response()->json(new AuthorResource($author), 200);
     }
 

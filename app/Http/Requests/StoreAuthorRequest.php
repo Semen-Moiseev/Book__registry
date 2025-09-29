@@ -22,7 +22,7 @@ class StoreAuthorRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required'  => 'Имя автора обязательно',
+            'name.required'  => 'The name is required.',
         ];
     }
 }

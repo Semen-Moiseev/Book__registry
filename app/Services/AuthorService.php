@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Author;
 use App\Repositories\AuthorRepositoryInterface;
+use App\Exceptions\CustomException;
 
 class AuthorService
 {
@@ -23,7 +24,13 @@ class AuthorService
     // Получить автора по id
     public function getAuthorById(int $id): ?Author
     {
-        return $this->repository->findById($id);
+        $author = $this->repository->findById($id);
+        if(!$author)
+        {
+            throw new CustomException("Author with the id {$id} was not found", 404);
+        }
+
+        return $author;
     }
 
     // Создание автора

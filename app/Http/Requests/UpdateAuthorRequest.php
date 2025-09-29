@@ -15,7 +15,7 @@ class UpdateAuthorRequest extends FormRequest
     {
         return [
             //Валидация: переменная есть в поле ввода, Тип данных, Длина не больше 255
-            'name' => ['sometimes', 'string', 'max:255'],
+            'name' => ['sometimes', 'string', 'max:255', 'unique:authors,name'],
         ];
     }
 }
