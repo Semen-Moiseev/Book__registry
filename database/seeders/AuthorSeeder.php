@@ -10,20 +10,13 @@ class AuthorSeeder extends Seeder
 {
     public function run(): void
     {
-        Author::create([
-            'name' => 'Пушкин А.С.',
-        ]);
+        $authors = [
+            ['name' => 'Пушкин А.С.'],
+            ['name' => 'Толстой Л.Н.'],
+            ['name' => 'Гоголь Н.В.'],
+            ['name' => 'Лермонтов М.Ю.'],
+        ];
 
-        Author::create([
-            'name' => 'Толстой Л.Н.',
-        ]);
-
-        Author::create([
-            'name' => 'Гоголь Н.В.',
-        ]);
-
-        Author::create([
-            'name' => 'Лермонтов М.Ю.'
-        ]);
+        Author::insert($authors);
     }
 }

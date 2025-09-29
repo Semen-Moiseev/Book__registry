@@ -22,37 +22,37 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 // Определяем статус код
                 $status = 500;
-                $message = 'Произошла ошибка на сервере';
+                $message = 'An error has occurred on the server';
 
                 // CustomException
                 if ($e instanceof \App\Exceptions\CustomException) {
                     $status = $e->getStatusCode();
-                    $message = 'Ресурс не найден';
+                    $message = 'The resource was not found';
                 }
                 // Модель не найдена -> 404
                 elseif ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                     $status = 404;
-                    $message = 'Ресурс не найден';
+                    $message = 'The resource was not found';
                 }
                 // Ошибки валидации -> 422
                 elseif ($e instanceof \Illuminate\Validation\ValidationException) {
                     $status = 422;
-                    $message = 'Ошибка валидации';
+                    $message = 'Validation error';
                 }
                 // Неавторизован -> 401
                 elseif ($e instanceof \Illuminate\Auth\AuthenticationException) {
                     $status = 401;
-                    $message = 'Не авторизован';
+                    $message = 'Not authorized';
                 }
                 // Нет прав -> 403
                 elseif ($e instanceof \Illuminate\Auth\Access\AuthorizationException) {
                     $status = 403;
-                    $message = 'Нет доступа';
+                    $message = 'No access';
                 }
                 // Любое другое HTTP-исключение
                 elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
                     $status = $e->getStatusCode();
-                    $message = $e->getMessage() ?: 'Произошла ошибка на сервере';
+                    $message = $e->getMessage() ?: 'An error has occurred on the server';
                 }
 
                 // Формируем JSON ответ ТОЛЬКО с нужными полями

@@ -25,28 +25,22 @@ class AuthorService
     public function getAuthorById(int $id): ?Author
     {
         $author = $this->repository->findById($id);
-        if(!$author)
-        {
-            throw new CustomException("Author with the id {$id} was not found", 404);
-        }
-
+        if(!$author) { throw new CustomException("The resource was not found", 404); }
         return $author;
     }
 
     // Создание автора
     public function createAuthor(array $data): Author
     {
-        // $author = $this->repository->create($data);
-        // return $author;
-        return $this->repository->create($data);
+        $author = $this->repository->create($data);
+        return $author;
     }
 
     // Обновление данных автора по id
     public function updateAuthor(Author $author, array $data): Author
     {
-        // $author->update($data);
-        // return $author;
-        return $this->repository->update($author, $data);
+        $author->update($data);
+        return $author;
     }
 
     // Удаление автора с определенным id
