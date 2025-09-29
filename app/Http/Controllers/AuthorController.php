@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Author;
 use App\Http\Resources\AuthorResource;
@@ -25,38 +26,34 @@ class AuthorController extends Controller
         $perPage = $request->input('per_page', 5);
         $authors = $this->service->getAllAuthors($perPage);
         return AuthorResource::collection($authors)
-        ->response()
-        ->setStatusCode(200);
+        ->response()->setStatusCode(200);
     }
 
     // GET /api/authors/{id} -> Получить автора по id
     public function show(int $id): JsonResponse
     {
         $author = $this->service->getAuthorById($id);
-        return response()->json(new AuthorResource($author), 200);
+        return $this->success(new AuthorResource($author), 'The data was successfully found', 200);
     }
 
     // POST /api/authors -> Создание автора
     public function store(StoreAuthorRequest $request): JsonResponse
     {
         $author = $this->service->createAuthor($request->validated());
-        return response()->json(new AuthorResource($author), 201);
+        return $this->success(new AuthorResource($author), 'The data has been successfully created', 201);
     }
 
     // PUT /api/authors/{id} -> Обновление данных автора по id
     public function update(UpdateAuthorRequest $request, Author $author): JsonResponse
     {
         $author = $this->service->updateAuthor($author, $request->validated());
-        return response()->json(new AuthorResource($author)->fresh(), 200);
+        return $this->success(new AuthorResource($author)->fresh(), 'The data has been successfully updated', 200);
     }
 
     // DELETE /api/authors/{id} -> Удаление автора с определенным id
     public function destroy(Author $author): JsonResponse
     {
         $this->service->deleteAuthor($author);
-        return response()->json([
-            'success' => true,
-            'message' => 'Data has been successfully deleted'
-        ], 204);
+        return $this->success(null, 'The author was deleted successfully', 204);
     }
 }
