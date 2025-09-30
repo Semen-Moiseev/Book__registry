@@ -14,7 +14,6 @@ use Illuminate\Http\JsonResponse;
 class AuthorController extends Controller
 {
     protected AuthorService $service;
-
     public function __construct(AuthorService $service)
     {
         $this->service = $service;
@@ -50,7 +49,7 @@ class AuthorController extends Controller
         return $this->success(new AuthorResource($author)->fresh(), 'The data has been successfully updated', 200);
     }
 
-    // DELETE /api/authors/{id} -> Удаление автора с определенным id
+    // DELETE /api/authors/{id} -> Удаление автора по id
     public function destroy(Author $author): JsonResponse
     {
         $this->service->deleteAuthor($author);

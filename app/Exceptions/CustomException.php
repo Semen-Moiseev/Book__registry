@@ -7,7 +7,6 @@ use Exception;
 class CustomException extends Exception
 {
     protected int $statusCode;
-
     public function __construct(string $message = "Error", int $statusCode = 400)
     {
         parent::__construct($message);

@@ -9,7 +9,6 @@ use App\Exceptions\CustomException;
 class AuthorService
 {
     protected AuthorRepositoryInterface $repository;
-
     public function __construct(AuthorRepositoryInterface $repository)
     {
         $this->repository = $repository;
@@ -43,7 +42,7 @@ class AuthorService
         return $author;
     }
 
-    // Удаление автора с определенным id
+    // Удаление автора по id
     public function deleteAuthor(Author $author): void
     {
         $this->repository->delete($author);
