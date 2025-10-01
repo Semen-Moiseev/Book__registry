@@ -16,10 +16,12 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //Валидация: не пустое, тип данных строка, длина не больше 255
-            'title'  => ['required', 'string', 'max:255'],
-            //не пустое, тип данных строка, входит в enum
+            // Обязательно | Строка | Длина не больше 255 | Уникальное название только для этого автора
+            'title'  => ['required', 'string', 'max:255', Rule::unique('books')->where(fn ($query) => $query->where('author_id', $this->input('author_id')))],
+            // Обязательно | Строка | Входит в enum
             'type' => ['required', 'string', Rule::enum(BookType::class)],
+            // Обязательно | Строка | Должен существовать в таблице authors
+            'author_id' => ['required', 'string', 'exists:authors,id'],
         ];
     }
 

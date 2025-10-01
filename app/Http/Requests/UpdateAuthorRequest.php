@@ -14,7 +14,7 @@ class UpdateAuthorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //Валидация: переменная есть в поле ввода, тип данных, длина не больше 255, имя уникально
+            // Не обязательно, но если оно есть в запросе, будет проверено | Строка | Длина не больше 255 | Уникально
             'name' => ['sometimes', 'string', 'max:255', 'unique:authors,name'],
         ];
     }

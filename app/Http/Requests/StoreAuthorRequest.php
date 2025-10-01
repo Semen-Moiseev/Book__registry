@@ -14,7 +14,7 @@ class StoreAuthorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //Валидация: не пустое, тип данных, длина не больше 255, уникально
+            // Обязательно | Строка | Длина не больше 255 | Уникально
             'name'  => ['required', 'string', 'max:255', 'unique:authors,name'],
         ];
     }

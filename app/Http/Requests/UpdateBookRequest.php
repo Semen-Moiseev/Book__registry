@@ -16,10 +16,12 @@ class UpdateBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //Валидация: переменная есть в поле ввода, тип данных строка, длина не больше 255
-            'title' => ['sometimes', 'string', 'max:255'],
-            //переменная есть в поле ввода, тип данных строка, входит в enum
+            // Не обязательно, но если оно есть в запросе, будет проверено | Строка | Длина не больше 255 | Уникальное название только для этого автора без этой книги
+            'title' => ['sometimes', 'string', 'max:255', Rule::unique('books')->ignore($this->book->id)->where(fn ($query) => $query->where('author_id', $this->input('author_id'))),],
+            // Не обязательно, но если оно есть в запросе, будет проверено | Строка | Входит в enum
             'type' => ['sometimes', 'string', Rule::enum(BookType::class)],
+            // Не обязательно, но если оно есть в запросе, будет проверено | Строка | Должен существовать в таблице authors
+            'author_id' => ['sometimes', 'string', 'exists:authors,id'],
         ];
     }
 }
