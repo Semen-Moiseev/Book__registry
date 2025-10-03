@@ -4,7 +4,7 @@ The implementation of the simplest registry of books in the library
 
 ## Project Description
 
-_ Brief description of the project:_
+_Brief description of the project:_
 
 The project is a web application for library management with an administrative panel and a REST API. The system implements CRUD operations for the entities "Books", "Authors" and "Genres" with data validation and logging of actions. In the administrative part, filtering, searching and sorting of books, as well as statistics on authors are available. The API provides author authorization and provides endpoints for working with books, authors, and genres, including pagination. Authors can edit only their own data and books. The types of book editions are implemented via Enum.
 
