@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreGenreRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            // Обязательно | Строка | Длина не более 255 | Уникально
+            'name' => ['required', 'string', 'max:255', 'unique:genres,name']
+        ];
+    }
+}

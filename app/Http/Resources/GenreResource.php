@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BookResource extends JsonResource
+class GenreResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -13,10 +13,10 @@ class BookResource extends JsonResource
         if ($request->query('raw') === '1') {
             return [
                 'id' => $this->id,
-                'title' => $this->title,
-                'type' => $this->type,
-                'author_id' => $this->author_id,
-                'genres' => $this->genres,
+                'name' => $this->name,
+                'books' => $this->whenLoaded('books', function () {
+                    return $this->books->pluck('id');
+                }),
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
             ];
@@ -25,10 +25,10 @@ class BookResource extends JsonResource
         // Для пользователя
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'type' => $this->type->label(),
-            'author' => new AuthorResource($this->whenLoaded('author'), $request),
-            'genres' => GenreResource::collection($this->whenLoaded('genres')),
+            'name' => $this->name,
+            'books' => $this->whenLoaded('books', function () {
+                return $this->books->pluck('title');
+            }),
         ];
     }
 }

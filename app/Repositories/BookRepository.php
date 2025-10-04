@@ -9,23 +9,30 @@ class BookRepository implements BookRepositoryInterface
 {
     public function getAll(int $perPage): LengthAwarePaginator
     {
-        return Book::with('author')->paginate($perPage);
+        return Book::with(['author', 'genres'])->paginate($perPage);
     }
 
     public function findById(int $id): ?Book
     {
-        return Book::with('author')->find($id);
+        return Book::with(['author', 'genres'])->find($id);
     }
 
     public function create(array $data): Book
     {
-        return Book::create($data)->load('author');
+        $book = Book::create($data);
+        if (!empty($data['genres']) && is_array($data['genres'])) {
+            $book->genres()->attach($data['genres']);
+        }
+        return $book->load(['author', 'genres']);
     }
 
     public function update(Book $book, array $data): Book
     {
-        $book->update($data)->load('author');
-        return $book;
+        $book->update($data);
+        if (!empty($data['genres']) && is_array($data['genres'])) {
+            $book->genres()->sync($data['genres']);
+        }
+        return $book->load(['author', 'genres']);
     }
 
     public function delete(Book $book): void

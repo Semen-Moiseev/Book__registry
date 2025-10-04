@@ -8,15 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('authors', function (Blueprint $table) {
+        Schema::create('book_genre', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->foreignId('book_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('genre_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->unique(['book_id', 'genre_id']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('authors');
+        Schema::dropIfExists('book_genre');
     }
 };

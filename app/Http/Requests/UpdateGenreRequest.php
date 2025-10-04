@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateAuthorRequest extends FormRequest
+class UpdateGenreRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class UpdateAuthorRequest extends FormRequest
     {
         return [
             // Не обязательно, но если оно есть в запросе, будет проверено | Строка | Длина не больше 255 | Уникально, не сравнивая с текущим
-            'name' => ['sometimes', 'string', 'max:255', Rule::unique('authors', 'name')->ignore($this->route('author'))],
+            'name' => ['sometimes', 'string', 'max:255', Rule::unique('genres', 'name')->ignore($this->route('genre'))]
         ];
     }
 }

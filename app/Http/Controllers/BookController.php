@@ -24,8 +24,7 @@ class BookController extends Controller
     {
         $perPage = $request->input('per_page', 5);
         $books = $this->service->getAllBooks($perPage);
-        return BookResource::collection($books)
-        ->response()->setStatusCode(200);
+        return BookResource::collection($books)->response()->setStatusCode(200);
     }
 
     // GET /api/books/{id} -> Получить книгу по id
@@ -46,7 +45,7 @@ class BookController extends Controller
     public function update(UpdateBookRequest $request, Book $book): JsonResponse
     {
         $book = $this->service->updateBook($book, $request->validated());
-        return $this->success(new BookResource($book)->fresh(), 'The data has been successfully updated', 200);
+        return $this->success(new BookResource($book), 'The data has been successfully updated', 200);
     }
 
     // DELETE /api/books/{id} -> Удаление книги по id

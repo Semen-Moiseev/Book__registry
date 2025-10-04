@@ -38,7 +38,7 @@ class BookService
     // Обновление данных книги по id
     public function updateBook(Book $book, array $data): Book
     {
-        $book->update($data);
+        $book = $this->repository->update($book, $data);
         return $book;
     }
 

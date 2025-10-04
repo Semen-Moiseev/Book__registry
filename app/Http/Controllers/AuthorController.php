@@ -46,7 +46,7 @@ class AuthorController extends Controller
     public function update(UpdateAuthorRequest $request, Author $author): JsonResponse
     {
         $author = $this->service->updateAuthor($author, $request->validated());
-        return $this->success(new AuthorResource($author)->fresh(), 'The data has been successfully updated', 200);
+        return $this->success(new AuthorResource($author), 'The data has been successfully updated', 200);
     }
 
     // DELETE /api/authors/{id} -> Удаление автора по id
