@@ -19,11 +19,13 @@ class AuthorController extends Controller
         $this->service = $service;
     }
 
-    // GET /api/authors -> Получить список авторов с пагинацией
+    // GET /api/authors?include= -> Получить список авторов с пагинацией
     public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('per_page', 5);
-        $authors = $this->service->getAllAuthors($perPage);
+        $include = $request->query('include', '');
+
+        $authors = $this->service->getAllAuthors($perPage, $include);
         return AuthorResource::collection($authors)
         ->response()->setStatusCode(200);
     }

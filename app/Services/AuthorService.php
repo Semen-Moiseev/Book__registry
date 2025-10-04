@@ -15,9 +15,9 @@ class AuthorService
     }
 
     // Получить список авторов с пагинацией
-    public function getAllAuthors(int $perPage)
+    public function getAllAuthors(int $perPage, string $include)
     {
-        return $this->repository->getAll($perPage);
+        return $this->repository->getAll($perPage, $include);
     }
 
     // Получить автора по id

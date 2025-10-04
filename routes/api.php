@@ -7,15 +7,15 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
 
+// Специальны endpoints
+
+//Route::GET('/authors-with-books-count', [AuthorController::class, 'authorsWithBooksCount']);
+
 // Стандартные CRUD операции
 
 Route::apiResource('authors', AuthorController::class);
 Route::apiResource('books', BookController::class);
 Route::apiResource('genres', GenreController::class);
-
-// Специальны endpoints
-
-//Route::GET('/authors', [AuthorController::class, 'index']);
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();

@@ -14,6 +14,9 @@ return new class extends Migration
             $table->string('type');
             $table->string('author_id');
             $table->timestamps();
+
+            $table->foreignId('author_id')->constrained('authors')->onDelete('restrict');
+            // Нельзя удалить автора, пока у него есть книги
         });
     }
 

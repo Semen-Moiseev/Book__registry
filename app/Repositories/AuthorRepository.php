@@ -7,8 +7,18 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AuthorRepository implements AuthorRepositoryInterface
 {
-    public function getAll(int $perPage): LengthAwarePaginator
+    public function getAll(int $perPage, string $include): LengthAwarePaginator
     {
+        // Получить список авторов с кол-вом книг с пагинацией
+        if (str_contains($include, 'books-count')) {
+            return Author::withCount('books')->paginate($perPage);
+        }
+
+        // Получить список авторов со списком книг с пагинацией
+        if (str_contains($include, 'books')) {
+            return Author::with('books')->paginate($perPage);
+        }
+
         return Author::paginate($perPage);
     }
 
