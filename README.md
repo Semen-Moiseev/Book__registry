@@ -1,4 +1,4 @@
-# Book_registry <ins>***EN***</ins>
+# book-catalog-laravel-backend <ins>***EN***</ins>
 
 The implementation of the simplest registry of books in the library
 
@@ -50,7 +50,7 @@ Implement data output in JSON format using the REST API:
 ## Usage examples
 
 ----------------------------------------------------------------------------
-# Book_registry <ins>***RU***</ins>
+# book-catalog-laravel-backend <ins>***RU***</ins>
 
 Реализация простейшего реестра книг в библиотеке
 
