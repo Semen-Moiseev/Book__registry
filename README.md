@@ -49,7 +49,7 @@ Implement data output in JSON format using the REST API:
 
 ## Usage examples
 
-----------------------------------------------------------------------------
+---
 # book-catalog-laravel-backend <ins>***RU***</ins>
 
 Реализация простейшего реестра книг в библиотеке
