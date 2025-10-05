@@ -7,8 +7,13 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GenreRepository implements GenreRepositoryInterface
 {
-    public function getAll(int $perPage): LengthAwarePaginator
+    public function getAll(int $perPage, string $include): LengthAwarePaginator
     {
+        // Получить список авторов с кол-вом книг с пагинацией
+        if (str_contains($include, 'books')) {
+            return Genre::with('books')->paginate($perPage);
+        }
+
         return Genre::paginate($perPage);
     }
 

@@ -14,9 +14,7 @@ class GenreResource extends JsonResource
             return [
                 'id' => $this->id,
                 'name' => $this->name,
-                'books' => $this->whenLoaded('books', function () {
-                    return $this->books->pluck('id');
-                }),
+                'books' => $this->when($this->relationLoaded('books'), $this->books),
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
             ];
@@ -26,9 +24,7 @@ class GenreResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'books' => $this->whenLoaded('books', function () {
-                return $this->books->pluck('title');
-            }),
+            'books' => $this->when($this->relationLoaded('books'), $this->books),
         ];
     }
 }

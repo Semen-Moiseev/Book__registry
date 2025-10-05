@@ -15,9 +15,9 @@ class GenreService
     }
 
     // Получить список жанров с пагинацией
-    public function getAllGenres(int $perPage)
+    public function getAllGenres(int $perPage, string $include)
     {
-        return $this->repository->getAll($perPage);
+        return $this->repository->getAll($perPage, $include);
     }
 
     // Получить жанр по id

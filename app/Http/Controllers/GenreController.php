@@ -19,11 +19,13 @@ class GenreController extends Controller
         $this->service = $service;
     }
 
-    // GET /api/genres -> Получить список жанров с пагинацией
+    // GET /api/genres?include= -> Получить список жанров с пагинацией
     public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('perPage', 5);
-        $genre = $this->service->getAllGenres($perPage);
+        $include = $request->query('include', '');
+
+        $genre = $this->service->getAllGenres($perPage, $include);
         return GenreResource::collection($genre)->response()->setStatusCode(200);
     }
 
