@@ -6,10 +6,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\UserController;
 
 // Специальны endpoints
 
-//Route::GET('/authors-with-books-count', [AuthorController::class, 'authorsWithBooksCount']);
+Route::POST('/register', [UserController::class, 'register']);
+Route::POST('/login', [UserController::class, 'login']);
 
 // Стандартные CRUD операции
 
