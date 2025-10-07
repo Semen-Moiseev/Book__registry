@@ -9,7 +9,7 @@ class Genre extends Model
 {
     protected $fillable =['name'];
 
-    //Связь: один жанр -> много книг
+    //Связь: много жанров -> много книг
     public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'book_genre');

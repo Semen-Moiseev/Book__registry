@@ -15,13 +15,13 @@ class Book extends Model
         'type' => BookType::class,
     ];
 
-    //Связь: одна книга -> один автор
+    //Связь: одна книга -> один автор (принадлежит)
     public function author(): BelongsTo
     {
         return $this->belongsTo(Author::class, 'author_id');
     }
 
-    //Связь: одна книга -> много жанров
+    //Связь: много книг -> много жанров
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class, 'book_genre');
