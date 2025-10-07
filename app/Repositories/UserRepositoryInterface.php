@@ -8,7 +8,7 @@ interface UserRepositoryInterface
 {
     public function register(array $data): User;
 
-    public function login();
+    public function login(array $data): ?array;
 
     public function logout();
 }

@@ -18,37 +18,12 @@ class UserController extends Controller
     public function register(StoreUserRequest $request)
     {
         $user = $this->service->register($request->validated());
-        return $this->success(new UserResource($user), 'The data has been successfully created', 201);
+        return $this->success(new UserResource($user), 'Регситрация!!!', 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginUserRequest $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !\Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'success' => false,
-                'code' => 401,
-                'message' => 'Неверный email или пароль',
-            ], 401);
-        }
-
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        return response()->json([
-            'success' => true,
-            'code' => 200,
-            'message' => 'Автор успешно авторизован',
-            'data' => [
-                'user' => $user,
-                'author' => $user->author,
-                'token' => $token,
-            ],
-        ], 200);
+        $result = $this->service->login($request->validated());
+        return $this->success(new UserResource($result), 'Авторизация!!!', 200); // ДОДЕЛАТЬ ???????
     }
 }

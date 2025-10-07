@@ -21,7 +21,7 @@ class UserService
     }
 
     // Авторизация пользователя под автором
-    public function login()
+    public function login(array $data): array
     {
         $user = $this->repository->login($data);
         return $user;

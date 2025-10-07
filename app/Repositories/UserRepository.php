@@ -30,4 +30,27 @@ class UserRepository implements UserRepositoryInterface
 
         return $user;
     }
+
+    public function login(array $data): ?array
+    {
+        // Ищем пользователя по email
+        $user = User::where('email', $credentials['email'])->first();
+
+        // Проверяем пароль
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['Неверный email или пароль.'],
+            ]);
+        }
+
+        // Удаляем старые токены (по желанию, для безопасности)
+        $user->tokens()->delete();
+
+        // Создаём новый Sanctum токен
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Возвращаем результат
+        $user->token = $token;
+        return $user;
+    }
 }
