@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Book;
 use App\Repositories\BookRepositoryInterface;
 use App\Exceptions\CustomException;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class BookService
 {
@@ -15,7 +16,7 @@ class BookService
     }
 
     // Получить список книг с пагинацией
-    public function getAllBooks(int $perPage)
+    public function getAllBooks(int $perPage): LengthAwarePaginator
     {
         return $this->repository->getAll($perPage);
     }

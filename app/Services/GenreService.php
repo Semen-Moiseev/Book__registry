@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Genre;
 use App\Repositories\GenreRepositoryInterface;
 use App\Exceptions\CustomException;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GenreService
 {
@@ -15,7 +16,7 @@ class GenreService
     }
 
     // Получить список жанров с пагинацией
-    public function getAllGenres(int $perPage, string $include)
+    public function getAllGenres(int $perPage, string $include): LengthAwarePaginator
     {
         return $this->repository->getAll($perPage, $include);
     }

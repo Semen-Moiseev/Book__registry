@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Author;
 use App\Repositories\AuthorRepositoryInterface;
 use App\Exceptions\CustomException;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AuthorService
 {
@@ -15,7 +16,7 @@ class AuthorService
     }
 
     // Получить список авторов с пагинацией
-    public function getAllAuthors(int $perPage, string $include)
+    public function getAllAuthors(int $perPage, string $include): LengthAwarePaginator
     {
         return $this->repository->getAll($perPage, $include);
     }
