@@ -2,43 +2,49 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Author;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
+use App\Models\User;
 
-class AuthorSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     public function run(): void
     {
         $now = Carbon::now();
 
-        $authors = [
+        $users = [
             [
-                'user_id' => '1',
                 'name' => 'Пушкин А.С.',
+                'email' => 'email-1@mail.ru',
+                'password' => Hash::make('password'),
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
-                'user_id' => '2',
                 'name' => 'Толстой Л.Н.',
+                'email' => 'email-2@mail.ru',
+                'password' => Hash::make('password'),
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
-                'user_id' => '3',
                 'name' => 'Гоголь Н.В.',
+                'email' => 'email-3@mail.ru',
+                'password' => Hash::make('password'),
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
-                'user_id' => '4',
                 'name' => 'Лермонтов М.Ю.',
+                'email' => 'email-4@mail.ru',
+                'password' => Hash::make('password'),
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
         ];
 
-        Author::insert($authors);
+        User::insert($users);
     }
 }
