@@ -6,13 +6,19 @@ use Illuminate\Routing\Controller as BaseController;
 
 abstract class Controller extends BaseController
 {
-    protected function success($data = null, string $message, int $code)
+    protected function success($data = null, string $message, int $code, array $extra = [])
     {
-        return response()->json([
+        $response = [
             'success' => true,
             'code'    => $code,
             'message' => $message,
             'data'    => $data,
-        ], $code);
+        ];
+
+        if (!empty($extra)) {
+            $response = array_merge($response, $extra);
+        }
+
+        return response()->json($response, $code);
     }
 }

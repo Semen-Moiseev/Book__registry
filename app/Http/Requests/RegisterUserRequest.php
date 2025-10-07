@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class RegisterUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,8 +16,8 @@ class StoreUserRequest extends FormRequest
         return [
             // Обязательно | Строка | Длина не больше 255 | Уникально
             'name'  => ['required', 'string', 'max:255', 'unique:authors,name'],
-            // Обязательно | Email | Уникальный в таблице users
-            'email' => ['required', 'email', 'unique:users,email'],
+            // Обязательно | Email | Максимальная длина 255 | Уникальный в таблице users
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             // Обязательно | Строка | Минимум 6 символов | Подтвержден
             'password' => ['required', 'string', 'min:6', 'confirmed']
         ];
