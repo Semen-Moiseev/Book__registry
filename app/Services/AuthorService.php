@@ -38,7 +38,7 @@ class AuthorService
     // Обновление данных автора по id
     public function updateAuthor(Author $author, array $data): Author
     {
-        $author->update($data);
+        $author = $this->repository->update($author, $data);
         return $author;
     }
 
