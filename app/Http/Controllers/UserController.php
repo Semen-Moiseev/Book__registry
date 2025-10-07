@@ -5,43 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Author;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
-    public function register(Request $request)
+    protected UserService $service;
+    public function __construct(UserService $service)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed', // password_confirmation
-        ]);
+        $this->service = $service;
+    }
 
-        // Создаем пользователя
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
-
-        // Создаем автора с тем же именем и связываем с пользователем
-        $author = Author::create([
-            'user_id' => $user->id,
-            'name' => $user->name,
-        ]);
-
-        // Создаем токен для API
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        return response()->json([
-            'success' => true,
-            'code' => 201,
-            'message' => 'Пользователь и автор созданы успешно',
-            'data' => [
-                'user' => $user,
-                'author' => $author,
-                'token' => $token,
-            ],
-        ], 201);
+    public function register(StoreUserRequest $request)
+    {
+        $user = $this->service->register($request->validated());
+        return $this->success(new UserResource($user), 'The data has been successfully created', 201);
     }
 
     public function login(Request $request)
