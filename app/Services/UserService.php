@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\UserRepositoryInterface;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -23,13 +24,26 @@ class UserService
     // Авторизация пользователя под автором
     public function login(array $data): ?array
     {
-        $user = $this->repository->login($data);
-        return $user;
+        $user = $this->repository->findUserByEmail($data['email']);
+
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['Invalid credentials.'],
+            ]);
+        }
+
+        $user->tokens()->delete();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return [
+            'user' => $user,
+            'token' => $token,
+        ];
     }
 
     // Выход из системы
     public function logout(User $user): void
     {
-        $this->repository->logout($user);
+        $user->tokens()->delete();
     }
 }

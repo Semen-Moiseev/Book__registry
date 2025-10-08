@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\Author;
-use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -26,27 +25,8 @@ class UserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function login(array $data): ?array
+    public function findUserByEmail(string $email): ?User
     {
-        $user = User::where('email', $data['email'])->first();
-
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Invalid credentials.'],
-            ]);
-        }
-
-        $user->tokens()->delete();
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return [
-        'user' => $user,
-        'token' => $token,
-    ];
-    }
-
-    public function logout(User $user): void
-    {
-        $user->tokens()->delete();
+        return User::where('email', $email)->first();
     }
 }
