@@ -17,20 +17,14 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions,) {
         $exceptions->render(function (Throwable $e, Illuminate\Http\Request $request) {
-            // Обрабатываем только API запросы
+            // Обрабатываем API запросы
             if ($request->is('api/*') || $request->expectsJson()) {
 
-                // Определяем статус код
                 $status = 500;
                 $message = 'An error has occurred on the server';
 
-                // CustomException
-                if ($e instanceof \App\Exceptions\CustomException) {
-                    $status = $e->getStatusCode();
-                    $message = 'The resource was not found';
-                }
                 // Модель не найдена -> 404
-                elseif (
+                if (
                     $e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException ||
                     $e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
                 ) {
@@ -42,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     $status = 422;
                     $message = 'Validation error';
                 }
-                // Неавторизован -> 401
+                // Не авторизован -> 401
                 elseif ($e instanceof \Illuminate\Auth\AuthenticationException) {
                     $status = 401;
                     $message = 'Not authorized';
@@ -52,20 +46,19 @@ return Application::configure(basePath: dirname(__DIR__))
                     $status = 403;
                     $message = 'No access';
                 }
-                // Любое другое HTTP-исключение
+                // Другое HTTP-исключение
                 elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
                     $status = $e->getStatusCode();
                     $message = $e->getMessage() ?: 'An error has occurred on the server';
                 }
 
-                // Формируем JSON ответ ТОЛЬКО с нужными полями
                 $response = [
                     'success' => false,
                     'code' => $status,
                     'message' => $message,
                 ];
 
-                // Для ошибок валидации добавляем детали
+                // Детали для ошибки валидации
                 if ($e instanceof \Illuminate\Validation\ValidationException) {
                     $response['errors'] = $e->errors();
                 }
