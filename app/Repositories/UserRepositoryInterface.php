@@ -10,5 +10,5 @@ interface UserRepositoryInterface
 
     public function login(array $data): ?array;
 
-    public function logout();
+    public function logout(User $user): void;
 }

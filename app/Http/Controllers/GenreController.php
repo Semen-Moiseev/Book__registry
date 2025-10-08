@@ -54,6 +54,6 @@ class GenreController extends Controller
     public function destroy(Genre $genre): JsonResponse
     {
         $this->service->deleteGenre($genre);
-        return $this->success(null, 'The book was deleted successfully', 204);
+        return $this->success(null, 'The book was deleted successfully', 200);
     }
 }

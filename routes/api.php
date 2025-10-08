@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 
 Route::POST('/register', [UserController::class, 'register']);
 Route::POST('/login', [UserController::class, 'login']);
+Route::POST('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 // Стандартные CRUD операции
 

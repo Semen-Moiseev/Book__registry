@@ -30,4 +30,10 @@ class UserController extends Controller
         $result = $this->service->login($request->validated());
         return $this->success(new UserResource($result['user']), 'The user has been successfully logged in', 200, ['token' => $result['token']]);
     }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $this->service->logout($request->user());
+        return $this->success(null, 'The user has been successfully logged out', 200);
+    }
 }

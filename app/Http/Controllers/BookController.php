@@ -52,6 +52,6 @@ class BookController extends Controller
     public function destroy(Book $book): JsonResponse
     {
         $this->service->deleteBook($book);
-        return $this->success(null, 'The book was deleted successfully', 204);
+        return $this->success(null, 'The book was deleted successfully', 200);
     }
 }

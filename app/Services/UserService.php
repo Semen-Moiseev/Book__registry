@@ -28,6 +28,8 @@ class UserService
     }
 
     // Выход из системы
-    public function logout()
-    {}
+    public function logout(User $user): void
+    {
+        $this->repository->logout($user);
+    }
 }

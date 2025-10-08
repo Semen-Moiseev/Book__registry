@@ -48,6 +48,6 @@ class AuthorController extends Controller
     public function destroy(Author $author): JsonResponse
     {
         $this->service->deleteAuthor($author);
-        return $this->success(null, 'The author was deleted successfully', 204);
+        return $this->success(null, 'The author was deleted successfully', 200);
     }
 }

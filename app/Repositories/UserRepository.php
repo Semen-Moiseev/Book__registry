@@ -45,6 +45,8 @@ class UserRepository implements UserRepositoryInterface
     ];
     }
 
-    public function logout()
-    {}
+    public function logout(User $user): void
+    {
+        $user->tokens()->delete();
+    }
 }
