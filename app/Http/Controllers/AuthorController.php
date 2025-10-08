@@ -37,13 +37,6 @@ class AuthorController extends Controller
         return $this->success(new AuthorResource($author), 'The data was successfully found', 200);
     }
 
-    // POST /api/authors -> Создание автора
-    public function store(StoreAuthorRequest $request): JsonResponse
-    {
-        $author = $this->service->createAuthor($request->validated());
-        return $this->success(new AuthorResource($author), 'The data has been successfully created', 201);
-    }
-
     // PUT /api/authors/{id} -> Обновление данных автора по id
     public function update(UpdateAuthorRequest $request, Author $author): JsonResponse
     {

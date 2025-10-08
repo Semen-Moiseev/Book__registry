@@ -27,13 +27,6 @@ class AuthorService
         return $author;
     }
 
-    // Создание автора
-    public function createAuthor(array $data): Author
-    {
-        $author = $this->repository->create($data);
-        return $author;
-    }
-
     // Обновление данных автора по id
     public function updateAuthor(Author $author, array $data): Author
     {

@@ -27,19 +27,24 @@ class AuthorRepository implements AuthorRepositoryInterface
         return Author::findOrFail($id);
     }
 
-    public function create(array $data): Author
-    {
-        return Author::create($data);
-    }
-
     public function update(Author $author, array $data): Author
     {
         $author->update($data);
+
+        $user = $author->user;
+        if ($user) {
+            $user->name = $data['name'];
+            $user->save();
+        }
+
         return $author;
     }
 
     public function delete(Author $author): void
     {
+        if ($author->user) {
+            $author->user->delete();
+        }
         $author->delete();
     }
 }

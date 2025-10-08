@@ -11,7 +11,7 @@ class Author extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name'];
+    protected $fillable = ['name', 'user_id'];
 
     // Связь: один автор -> много книг (связан)
     public function books(): HasMany

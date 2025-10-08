@@ -11,8 +11,6 @@ interface AuthorRepositoryInterface
 
     public function findById(int $id): ?Author;
 
-    public function create(array $data): Author;
-
     public function update(Author $author, array $data): Author;
 
     public function delete(Author $author): void;
