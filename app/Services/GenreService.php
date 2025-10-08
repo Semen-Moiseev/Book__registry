@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Genre;
 use App\Repositories\GenreRepositoryInterface;
-use App\Exceptions\CustomException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GenreService
@@ -25,7 +24,6 @@ class GenreService
     public function getGenreById (int $id): ?Genre
     {
         $genre = $this->repository->findById($id);
-        if(!$genre) { throw new CustomException("The resource was not found", 404); }
         return $genre;
     }
 

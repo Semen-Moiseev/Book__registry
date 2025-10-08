@@ -24,7 +24,7 @@ class AuthorRepository implements AuthorRepositoryInterface
 
     public function findById(int $id): ?Author
     {
-        return Author::find($id);
+        return Author::findOrFail($id);
     }
 
     public function create(array $data): Author

@@ -14,7 +14,7 @@ class BookRepository implements BookRepositoryInterface
 
     public function findById(int $id): ?Book
     {
-        return Book::with(['author', 'genres'])->find($id);
+        return Book::with(['author', 'genres'])->findOrFail($id);
     }
 
     public function create(array $data): Book

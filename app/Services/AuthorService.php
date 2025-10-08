@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Author;
 use App\Repositories\AuthorRepositoryInterface;
-use App\Exceptions\CustomException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AuthorService
@@ -25,7 +24,6 @@ class AuthorService
     public function getAuthorById(int $id): ?Author
     {
         $author = $this->repository->findById($id);
-        if(!$author) { throw new CustomException("The resource was not found", 404); }
         return $author;
     }
 

@@ -19,7 +19,7 @@ class GenreRepository implements GenreRepositoryInterface
 
     public function findById(int $id): ?Genre
     {
-        return Genre::find($id);
+        return Genre::findOrFail($id);
     }
 
     public function create(array $data): Genre

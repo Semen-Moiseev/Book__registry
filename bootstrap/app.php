@@ -30,7 +30,10 @@ return Application::configure(basePath: dirname(__DIR__))
                     $message = 'The resource was not found';
                 }
                 // Модель не найдена -> 404
-                elseif ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                elseif (
+                    $e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException ||
+                    $e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+                ) {
                     $status = 404;
                     $message = 'The resource was not found';
                 }

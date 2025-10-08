@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Book;
 use App\Repositories\BookRepositoryInterface;
-use App\Exceptions\CustomException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class BookService
@@ -25,7 +24,6 @@ class BookService
     public function getBookById(int $id): ?Book
     {
         $book = $this->repository->findById($id);
-        if(!$book) { throw new CustomException("The resource was not found", 404); }
         return $book;
     }
 
