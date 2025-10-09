@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Enums\UserRole;
 
 class User extends Authenticatable
@@ -33,7 +33,7 @@ class User extends Authenticatable
     ];
 
     // Связь: один пользователь -> один автор (связан)
-    public function author() : HasMany
+    public function author() : HasOne
     {
         return $this->hasOne(Author::class);
     }

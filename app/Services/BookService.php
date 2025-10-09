@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\Book;
+use App\Models\User;
+use App\Enums\UserRole;
 use App\Repositories\BookRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Exceptions\CustomException;
 
 class BookService
 {
@@ -28,8 +31,15 @@ class BookService
     }
 
     // Создание книги
-    public function createBook(array $data): Book
+    public function createBook(User $user, array $data): Book
     {
+        if ($user->role === UserRole::AUTHOR) {
+            $data['author_id'] = $user->author->id;
+        }
+        elseif ($user->role === UserRole::ADMIN && empty($data['author_id'])) {
+            throw new CustomException("author_id must be provided by admin", 422);
+        }
+
         $book = $this->repository->create($data);
         return $book;
     }

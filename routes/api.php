@@ -17,7 +17,11 @@ Route::POST('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 // Стандартные CRUD операции
 
 Route::apiResource('authors', AuthorController::class);
-Route::apiResource('books', BookController::class);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('books', BookController::class);
+});
+
 Route::apiResource('genres', GenreController::class);
 
 // Route::get('/user', function (Request $request) {

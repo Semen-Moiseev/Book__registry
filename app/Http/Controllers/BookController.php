@@ -10,9 +10,12 @@ use App\Services\BookService;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class BookController extends Controller
 {
+    use AuthorizesRequests;
+
     protected BookService $service;
     public function __construct(BookService $service)
     {
@@ -37,13 +40,14 @@ class BookController extends Controller
     // POST /api/books -> Создание книги
     public function store(StoreBookRequest $request): JsonResponse
     {
-        $book = $this->service->createBook($request->validated());
+        $book = $this->service->createBook(auth()->user(), $request->validated());
         return $this->success(new BookResource($book), 'The data has been successfully created', 201);
     }
 
     // PUT /api/books/{id} -> Обновление данных книги по id
     public function update(UpdateBookRequest $request, Book $book): JsonResponse
     {
+        $this->authorize('update', $book);
         $book = $this->service->updateBook($book, $request->validated());
         return $this->success(new BookResource($book), 'The data has been successfully updated', 200);
     }
@@ -51,6 +55,7 @@ class BookController extends Controller
     // DELETE /api/books/{id} -> Удаление книги по id
     public function destroy(Book $book): JsonResponse
     {
+        $this->authorize('delete', $book);
         $this->service->deleteBook($book);
         return $this->success(null, 'The book was deleted successfully', 200);
     }
