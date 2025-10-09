@@ -16,9 +16,8 @@ Route::POST('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 
 // Стандартные CRUD операции
 
-Route::apiResource('authors', AuthorController::class);
-
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('authors', AuthorController::class);
     Route::apiResource('books', BookController::class);
 });
 

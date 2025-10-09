@@ -10,9 +10,12 @@ use App\Services\AuthorService;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AuthorController extends Controller
 {
+    use AuthorizesRequests;
+
     protected AuthorService $service;
     public function __construct(AuthorService $service)
     {
@@ -40,6 +43,7 @@ class AuthorController extends Controller
     // PUT /api/authors/{id} -> Обновление данных автора по id
     public function update(UpdateAuthorRequest $request, Author $author): JsonResponse
     {
+        $this->authorize('update', $author);
         $author = $this->service->updateAuthor($author, $request->validated());
         return $this->success(new AuthorResource($author), 'The data has been successfully updated', 200);
     }
@@ -47,6 +51,7 @@ class AuthorController extends Controller
     // DELETE /api/authors/{id} -> Удаление автора по id
     public function destroy(Author $author): JsonResponse
     {
+        $this->authorize('update', $author);
         $this->service->deleteAuthor($author);
         return $this->success(null, 'The author was deleted successfully', 200);
     }
