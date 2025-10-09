@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
 use App\Models\User;
+use App\Enums\UserRole;
 
 class UserSeeder extends Seeder
 {
@@ -14,9 +15,10 @@ class UserSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        $users = [
+        $authors = [
             [
                 'name' => 'Пушкин А.С.',
+                'role' => UserRole::AUTHOR,
                 'email' => 'email-1@mail.ru',
                 'password' => Hash::make('password'),
                 'created_at' => $now,
@@ -24,6 +26,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Толстой Л.Н.',
+                'role' => UserRole::AUTHOR,
                 'email' => 'email-2@mail.ru',
                 'password' => Hash::make('password'),
                 'created_at' => $now,
@@ -31,6 +34,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Гоголь Н.В.',
+                'role' => UserRole::AUTHOR,
                 'email' => 'email-3@mail.ru',
                 'password' => Hash::make('password'),
                 'created_at' => $now,
@@ -38,6 +42,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Лермонтов М.Ю.',
+                'role' => UserRole::AUTHOR,
                 'email' => 'email-4@mail.ru',
                 'password' => Hash::make('password'),
                 'created_at' => $now,
@@ -45,6 +50,18 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        User::insert($users);
+        $admins = [
+            [
+                'name' => 'Администратор',
+                'role' => UserRole::ADMIN,
+                'email' => 'admin@mail.ru',
+                'password' => Hash::make('root'),
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+        ];
+
+        User::insert($authors);
+        User::insert($admins);
     }
 }
