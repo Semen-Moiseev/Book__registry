@@ -10,9 +10,12 @@ use App\Http\Resources\GenreResource;
 use App\Http\Requests\StoreGenreRequest;
 use App\Http\Requests\UpdateGenreRequest;
 use App\Models\Genre;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class GenreController extends Controller
 {
+    use AuthorizesRequests;
+
     protected GenreService $service;
     public function __construct(GenreService $service)
     {
@@ -39,6 +42,7 @@ class GenreController extends Controller
     // POST /api/genres -> Создание жанра
     public function store(StoreGenreRequest $request): JsonResponse
     {
+        $this->authorize('create', Genre::class);
         $genre = $this->service->createGenre($request->validated());
         return $this->success(new GenreResource($genre), 'The data has been successfully created', 201);
     }
@@ -46,6 +50,7 @@ class GenreController extends Controller
     // PUT /api/genres/{id} -> Обновление данных жанра по id
     public function update(UpdateGenreRequest $request, Genre $genre): JsonResponse
     {
+        $this->authorize('update', $genre);
         $genre = $this->service->updateGenre($genre, $request->validated());
         return $this->success(new GenreResource($genre), 'The data has been successfully updated', 200);
     }
@@ -53,6 +58,7 @@ class GenreController extends Controller
     // DELETE /api/genres/{id} -> Удаление жанра по id
     public function destroy(Genre $genre): JsonResponse
     {
+        $this->authorize('delete', $genre);
         $this->service->deleteGenre($genre);
         return $this->success(null, 'The book was deleted successfully', 200);
     }
