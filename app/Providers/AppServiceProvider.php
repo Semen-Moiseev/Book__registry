@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\Book;
+use App\Observers\BookObserver;
+
 use App\Repositories\AuthorRepositoryInterface;
 use App\Repositories\AuthorRepository;
 use App\Repositories\BookRepositoryInterface;
@@ -24,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        Book::observe(BookObserver::class);
     }
 }
