@@ -10,9 +10,12 @@ use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
+
     protected UserService $service;
     public function __construct(UserService $service)
     {
@@ -35,5 +38,19 @@ class UserController extends Controller
     {
         $this->service->logout($request->user());
         return $this->success(null, 'The user has been successfully logged out', 200);
+    }
+
+    public function makeAdmin(User $user): JsonResponse
+    {
+        $this->authorize('update', User::class);
+        $this->service->promoteToAdmin($user);
+        return $this->success(null, 'User has been successfully promoted to administrator.', 200);
+    }
+
+    public function makeAuthor(User $user): JsonResponse
+    {
+        $this->authorize('update', User::class);
+        $this->service->promoteToAuthor($user);
+        return $this->success(null, 'User has been successfully promoted to author.', 200);
     }
 }

@@ -27,8 +27,13 @@ return Application::configure(basePath: dirname(__DIR__))
                 $status = 500;
                 $message = 'An error has occurred on the server';
 
+                // CustomException
+                if ($e instanceof \App\Exceptions\CustomException) {
+                    $status = $e->getStatusCode();
+                    $message = $e->getMessage();
+                }
                 // Модель не найдена -> 404
-                if (
+                elseif (
                     $e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException ||
                     $e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
                 ) {

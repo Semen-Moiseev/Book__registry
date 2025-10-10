@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Models\Author;
+use App\Enums\UserRole;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -28,5 +29,15 @@ class UserRepository implements UserRepositoryInterface
     public function findUserByEmail(string $email): ?User
     {
         return User::where('email', $email)->first();
+    }
+
+    public function makeAdmin(User $user): void
+    {
+        $user->update(['role' => UserRole::ADMIN]);
+    }
+
+    public function makeAuthor(User $user): void
+    {
+        $user->update(['role' => UserRole::AUTHOR]);
     }
 }

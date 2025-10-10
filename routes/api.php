@@ -14,6 +14,9 @@ Route::POST('/register', [UserController::class, 'register']);
 Route::POST('/login', [UserController::class, 'login']);
 Route::POST('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
+Route::POST('/users/make-admin/{user}', [UserController::class, 'makeAdmin'])->middleware('auth:sanctum');
+Route::POST('/users/make-author/{user}', [UserController::class, 'makeAuthor'])->middleware('auth:sanctum');
+
 // Стандартные CRUD операции
 
 Route::middleware(['auth:sanctum'])->group(function () {

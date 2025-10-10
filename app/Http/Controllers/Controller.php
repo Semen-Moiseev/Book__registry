@@ -12,8 +12,11 @@ abstract class Controller extends BaseController
             'success' => true,
             'code'    => $code,
             'message' => $message,
-            'data'    => $data,
         ];
+
+        if (!empty($data)) {
+            $response['data'] = $data;
+        }
 
         if (!empty($extra)) {
             $response = array_merge($response, $extra);

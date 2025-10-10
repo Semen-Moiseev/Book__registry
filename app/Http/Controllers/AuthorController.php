@@ -51,7 +51,7 @@ class AuthorController extends Controller
     // DELETE /api/authors/{id} -> Удаление автора по id
     public function destroy(Author $author): JsonResponse
     {
-        $this->authorize('update', $author);
+        $this->authorize('delete', $author);
         $this->service->deleteAuthor($author);
         return $this->success(null, 'The author was deleted successfully', 200);
     }
