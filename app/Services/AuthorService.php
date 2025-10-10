@@ -21,9 +21,9 @@ class AuthorService
     }
 
     // Получить автора по id
-    public function getAuthorById(int $id): ?Author
+    public function getAuthorById(int $id, string $include): ?Author
     {
-        $author = $this->repository->findById($id);
+        $author = $this->repository->findById($id, $include);
         return $author;
     }
 

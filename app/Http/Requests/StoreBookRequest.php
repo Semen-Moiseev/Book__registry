@@ -17,8 +17,6 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            // Обязательно | Строка | Длина не больше 255 | Уникальное название только для этого автора
-            'title' => ['required', 'string', 'max:255', Rule::unique('books')->where(fn ($query) => $query->where('author_id', $this->input('author_id')))],
             // Обязательно | Строка | Входит в enum
             'type' => ['required', 'string', Rule::enum(BookType::class)],
             // Обязательно | Массив | Минимум 1
@@ -27,8 +25,19 @@ class StoreBookRequest extends FormRequest
             'genres.*' => ['integer', 'exists:genres,id'],
         ];
 
+        if(auth()->user()->role === UserRole::AUTHOR)
+        {
+            // Обязательно | Строка | Длина не больше 255 | Уникальное название только для этого автора
+            $rules['title'] = ['required', 'string', 'max:255', Rule::unique('books')->where(function ($query) {
+                $authorId = $this->user()->author->id;
+                return $query->where('author_id', $authorId);
+            })];
+        }
+
         if(auth()->user()->role === UserRole::ADMIN)
         {
+            // Обязательно | Строка | Длина не больше 255 | Уникальное название только для этого автора
+            $rules['title'] = ['required', 'string', 'max:255', Rule::unique('books')->where(fn ($query) => $query->where('author_id', $this->input('author_id')))];
             // Обязательно | Строка | Должен существовать в таблице authors
             $rules['author_id'] = ['required', 'string', 'exists:authors,id'];
         }

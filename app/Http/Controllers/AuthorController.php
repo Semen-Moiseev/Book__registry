@@ -34,9 +34,11 @@ class AuthorController extends Controller
     }
 
     // GET /api/authors/{id} -> Получить автора по id
-    public function show(int $id): JsonResponse
+    public function show(Request $request, int $id): JsonResponse
     {
-        $author = $this->service->getAuthorById($id);
+        $include = $request->query('include', '');
+
+        $author = $this->service->getAuthorById($id, $include);
         return $this->success(new AuthorResource($author), 'The data was successfully found', 200);
     }
 

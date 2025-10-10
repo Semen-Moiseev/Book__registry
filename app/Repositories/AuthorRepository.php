@@ -14,16 +14,16 @@ class AuthorRepository implements AuthorRepositoryInterface
             return Author::withCount('books')->paginate($perPage);
         }
 
-        // Получить список авторов со списком книг с пагинацией
-        if (str_contains($include, 'books')) {
-            return Author::with('books')->paginate($perPage);
-        }
-
         return Author::paginate($perPage);
     }
 
-    public function findById(int $id): ?Author
+    public function findById(int $id, string $include): ?Author
     {
+        // Получить список авторов со списком книг с пагинацией
+        if (str_contains($include, 'books')) {
+            return Author::with('books')->findOrFail($id);
+        }
+
         return Author::findOrFail($id);
     }
 

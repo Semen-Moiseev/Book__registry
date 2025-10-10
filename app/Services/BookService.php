@@ -18,9 +18,9 @@ class BookService
     }
 
     // Получить список книг с пагинацией
-    public function getAllBooks(int $perPage): LengthAwarePaginator
+    public function getAllBooks(int $perPage, string $include): LengthAwarePaginator
     {
-        return $this->repository->getAll($perPage);
+        return $this->repository->getAll($perPage, $include);
     }
 
     // Получить книгу по id

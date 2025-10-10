@@ -26,7 +26,9 @@ class BookController extends Controller
     public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('per_page', 5);
-        $books = $this->service->getAllBooks($perPage);
+        $include = $request->query('include', '');
+
+        $books = $this->service->getAllBooks($perPage, $include);
         return BookResource::collection($books)->response()->setStatusCode(200);
     }
 

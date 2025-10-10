@@ -19,11 +19,22 @@ Route::POST('/users/make-author/{user}', [UserController::class, 'makeAuthor'])-
 
 // Стандартные CRUD операции
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('authors', AuthorController::class);
-    Route::apiResource('books', BookController::class);
-    Route::apiResource('genres', GenreController::class);
-});
+Route::GET('/authors', [AuthorController::class, 'index']);
+Route::GET('/authors/{author}', [AuthorController::class, 'show']);
+Route::PUT('/authors/{author}', [AuthorController::class, 'update'])->middleware('auth:sanctum');
+Route::DELETE('/authors/{author}', [AuthorController::class, 'destroy'])->middleware('auth:sanctum');
+
+Route::GET('/books', [BookController::class, 'index']);
+Route::GET('/books/{book}', [BookController::class, 'show']);
+Route::POST('/books', [BookController::class, 'store'])->middleware('auth:sanctum');
+Route::PUT('/books/{book}', [BookController::class, 'update'])->middleware('auth:sanctum');
+Route::DELETE('/books/{book}', [BookController::class, 'destroy'])->middleware('auth:sanctum');
+
+Route::GET('/genres', [GenreController::class, 'index']);
+Route::GET('/genres/{genre}', [GenreController::class, 'show']);
+Route::POST('/genres', [GenreController::class, 'store'])->middleware('auth:sanctum');
+Route::PUT('/genres/{genre}', [GenreController::class, 'update'])->middleware('auth:sanctum');
+Route::DELETE('/genres/{genre}', [GenreController::class, 'destroy'])->middleware('auth:sanctum');
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();

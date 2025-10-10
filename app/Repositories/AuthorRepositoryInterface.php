@@ -9,7 +9,7 @@ interface AuthorRepositoryInterface
 {
     public function getAll(int $perPage, string $include): LengthAwarePaginator;
 
-    public function findById(int $id): ?Author;
+    public function findById(int $id, string $include): ?Author;
 
     public function update(Author $author, array $data): Author;
 

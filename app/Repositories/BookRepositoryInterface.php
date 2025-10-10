@@ -7,7 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface BookRepositoryInterface
 {
-    public function getAll(int $perPage): LengthAwarePaginator;
+    public function getAll(int $perPage, string $include): LengthAwarePaginator;
 
     public function findById(int $id): ?Book;
 
